@@ -11,6 +11,9 @@
   --color-paper: #f6faff;
   --color-brand-ink: #450003;
 
+  /* Breakpoint del diseño desktop del Figma (frames 1366w y 1920w) */
+  --breakpoint-desk: 1280px;
+
   --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-ui: "Montserrat", ui-sans-serif, system-ui, sans-serif;

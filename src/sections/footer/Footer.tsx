@@ -12,43 +12,57 @@ export function Footer() {
   const { marca, enlaces, contacto, legal } = footer;
 
   return (
-    <footer className="w-full bg-brand-red-dark px-[32px] pt-[48px] pb-[32px] text-white">
-      <div className="mx-auto flex max-w-[430px] flex-col gap-[36px]">
-        <div className="flex w-full flex-col items-center gap-[18px]">
-          <img src={marca.logo} alt={marca.alt} className="h-[147px] w-[147px] object-contain" />
-          <p className="text-center font-ui text-[26px] leading-[32px]">
-            {marca.linea1}
-            <br />
-            <span className="font-bold">{marca.linea2}</span>
-          </p>
-        </div>
+    <footer className="w-full bg-brand-red-dark px-[32px] pt-[48px] pb-[32px] text-white desk:px-[120px] desk:pt-[64px] desk:pb-[40px]">
+      <div className="mx-auto flex max-w-[430px] flex-col gap-[36px] desk:max-w-[1180px] desk:gap-[32px]">
+        <div className="flex flex-col gap-[36px] desk:flex-row desk:items-start desk:justify-between desk:gap-[24px]">
+          <div className="flex w-full flex-col items-center gap-[18px] desk:w-auto desk:flex-row desk:items-center desk:gap-[24px]">
+            <img
+              src={marca.logo}
+              alt={marca.alt}
+              className="h-[147px] w-[147px] shrink-0 object-contain"
+            />
+            <p className="text-center font-ui text-[26px] leading-[32px] desk:text-left desk:text-[38px] desk:leading-[46px]">
+              {marca.linea1}
+              <br />
+              <span className="font-bold">{marca.linea2}</span>
+            </p>
+          </div>
 
-        <nav className="flex w-full flex-col items-start gap-[16px]">
-          <p className="font-ui text-[18px] font-bold">{enlaces.titulo}</p>
-          {enlaces.items.map((item) => (
-            <a key={item.href} href={item.href} className="flex items-center gap-[10px]">
-              <img src="/assets/bullet.svg" alt="" className="h-[6px] w-[6px] shrink-0" />
-              <span className="font-ui text-[15px] text-white/85">{item.texto}</span>
+          <nav className="flex w-full flex-col items-start gap-[16px] desk:w-auto desk:gap-[18px]">
+            <p className="font-ui text-[18px] font-bold desk:text-[20px]">{enlaces.titulo}</p>
+            {enlaces.items.map((item) => (
+              <a key={item.href} href={item.href} className="flex items-center gap-[10px]">
+                <img src="/assets/bullet.svg" alt="" className="h-[6px] w-[6px] shrink-0" />
+                <span className="font-ui text-[15px] text-white/85 desk:text-[16px]">
+                  {item.texto}
+                </span>
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex w-full flex-col items-start gap-[16px] desk:w-auto desk:gap-[18px]">
+            <p className="font-ui text-[18px] font-bold desk:text-[20px]">{contacto.titulo}</p>
+            <a
+              href={`mailto:${contacto.email}`}
+              className="font-ui text-[15px] text-white/85 desk:text-[16px]"
+            >
+              {contacto.email}
             </a>
-          ))}
-        </nav>
-
-        <div className="flex w-full flex-col items-start gap-[16px]">
-          <p className="font-ui text-[18px] font-bold">{contacto.titulo}</p>
-          <a href={`mailto:${contacto.email}`} className="font-ui text-[15px] text-white/85">
-            {contacto.email}
-          </a>
-          <a href={contacto.facebook.href} className="flex items-center gap-[10px]">
-            <span className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-[16px] bg-brand-red">
-              <FacebookIcon />
-            </span>
-            <span className="font-ui text-[15px] text-white">{contacto.facebook.nombre}</span>
-          </a>
+            <a href={contacto.facebook.href} className="flex items-center gap-[10px]">
+              {/* El círculo cambia de rojo en el frame desktop */}
+              <span className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-[16px] bg-brand-red desk:bg-[#f21818]">
+                <FacebookIcon />
+              </span>
+              <span className="font-ui text-[15px] text-white desk:text-[16px]">
+                {contacto.facebook.nombre}
+              </span>
+            </a>
+          </div>
         </div>
 
         <div className="h-px w-full bg-white/15" />
 
-        <div className="flex w-full flex-col items-center gap-[8px] text-center font-ui text-[13px] text-white/55">
+        <div className="flex w-full flex-col items-center gap-[8px] text-center font-ui text-[13px] text-white/55 desk:flex-row desk:justify-between desk:gap-0 desk:text-left desk:text-[14px]">
           {legal.map((linea) => (
             <p key={linea}>{linea}</p>
           ))}

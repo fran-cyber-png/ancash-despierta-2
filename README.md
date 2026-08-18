@@ -3,8 +3,8 @@
 Landing **Áncash Despierta** (Voz Huascarán). React 19 + Vite + TypeScript + Tailwind v4.
 
 Diseño: Figma `ÁNCASH DESPIERTA` — archivo `fkpGJ8o2qT95sfhsTfOoCA`.
-Implementación **mobile-first** a partir de los frames mobile `7:267` (home, 430 × 5398)
-y `7:297` (interno / artículo, 430 × 1351).
+Implementación **mobile-first** a partir de los frames `7:267` (home mobile, 430 × 5398),
+`7:297` (interno / artículo mobile, 430 × 1351) y `7:172` (home desktop, 1366 × 2485).
 
 ## Estructura
 
@@ -44,6 +44,23 @@ y su `contenido` (cuerpo del artículo, un array por bloque de líneas) más `et
 El id de la noticia es el segmento de la URL; si no existe, redirige a `/`.
 
 > Deploy: al ser SPA, el servidor debe hacer fallback a `index.html` para rutas desconocidas.
+
+## Responsive
+
+Breakpoint único `desk` (1280px, definido en `@theme`). Debajo de 1280 va el diseño mobile;
+de 1280 hacia arriba, el desktop.
+
+Los frames de 1366 y 1920 del Figma usan **los mismos tamaños** (header 113px, logo 178×96,
+título 73px, card 414px, grid de 1302px, footer de hasta 1180px): lo único que cambia entre
+ambos son los márgenes laterales. Por eso el desktop no escala proporcionalmente — usa valores
+fijos con contenedores centrados, y a 1920 coincide al pixel con el master
+(grid centrado 1302 → header a 349px; hero 16:9 → 1080px de alto).
+
+| | 1366 | 1920 |
+|---|---|---|
+| Hero (16:9) | 768px de alto | 1080px |
+| Grid de noticias | 1302px (32px de margen) | 1302px centrado |
+| Footer | 1126px (px-120) | 1180px |
 
 ## Tokens
 
