@@ -15,7 +15,7 @@ export function Articulo({ noticia }: { noticia: Noticia }) {
           <div className="flex flex-col gap-[15px]">
             <Link
               to="/"
-              className="inline-flex w-fit items-center gap-[8px] font-ui text-[16px] font-bold uppercase text-brand-red"
+              className="inline-flex w-fit items-center gap-[10px] font-ui text-[32px] font-bold text-brand-red-dark"
             >
               <span aria-hidden="true">←</span>
               Inicio
