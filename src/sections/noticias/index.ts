@@ -1,2 +1,4 @@
 export { Noticias } from "./Noticias";
-export { noticias } from "./content";
+export { NoticiaCard } from "./NoticiaCard";
+export { noticias, getNoticia, noticiaHref } from "./content";
+export type { Noticia } from "./content";

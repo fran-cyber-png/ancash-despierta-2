@@ -1,12 +1,15 @@
-import { Header, Hero, Noticias, Footer } from "./sections";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Home, NoticiaPage } from "./pages";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      <Hero />
-      <Noticias />
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-white">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/noticia/:id" element={<NoticiaPage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
