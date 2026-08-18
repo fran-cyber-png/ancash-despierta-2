@@ -22,6 +22,13 @@ export function NoticiaCard({ noticia }: { noticia: Noticia }) {
         <p className="font-body text-[16px] leading-[24px] text-muted">
           {noticia.resumen}
         </p>
+        <Link
+          to={noticiaHref(noticia.slug)}
+          className="inline-flex w-fit items-center gap-[8px] bg-brand-red px-[20px] py-[12px] font-ui text-[14px] font-bold uppercase text-white"
+        >
+          Leer Artículo
+          <span aria-hidden="true">›</span>
+        </Link>
       </div>
     </article>
   );
