@@ -17,7 +17,13 @@ export function Articulo({ noticia }: { noticia: Noticia }) {
               to="/"
               className="inline-flex w-fit items-center gap-[10px] font-ui text-[32px] font-bold text-brand-red-dark"
             >
-              <span aria-hidden="true">←</span>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-[28px] w-[28px] shrink-0 fill-current"
+              >
+                <path d="M20 11H7.83l4.58-4.59L11 5l-7 7 7 7 1.41-1.41L7.83 13H20z" />
+              </svg>
               Inicio
             </Link>
             <h1 className="font-ui text-[40px] leading-[38px] font-bold uppercase text-black desk:font-display desk:text-[48px] desk:leading-[57.6px]">
