@@ -1,15 +1,12 @@
-import { Hero, Nosotros, Propuestas, Equipo, Testimonios, Agenda, Contacto } from "./sections";
+import { Header, Hero, Noticias, Footer } from "./sections";
 
 export default function App() {
   return (
-    <main>
+    <div className="min-h-screen bg-white">
+      <Header />
       <Hero />
-      <Nosotros />
-      <Propuestas />
-      <Equipo />
-      <Testimonios />
-      <Agenda />
-      <Contacto />
-    </main>
+      <Noticias />
+      <Footer />
+    </div>
   );
 }
