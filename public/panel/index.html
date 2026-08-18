@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/png" href="/assets/logo-header.png" />
+    <title>Panel — Áncash Despierta</title>
+  </head>
+  <body>
+    <!-- El id es el que busca packages/admin/src/main.tsx; si cambia, el panel no monta. -->
+    <div id="bravo-admin"></div>
+    <script>
+      // Configuración del panel embebido de Bravo (multi-tenant, un solo bundle).
+      // NO usar https://bravo.goberna.us/panel: ese está fijado al tenant metavida.
+      window.__BRAVO__ = {
+        tenant: "ancashdespierta",
+        apiUrl: "https://bravo.goberna.us",
+        siteUrl: "https://ancashdespierta.com",
+        articleUrlPattern: "https://ancashdespierta.com/noticia/{slug}/",
+        panelBundleUrl: "https://bravo.goberna.us/bravo-admin.umd.js",
+      };
+    </script>
+    <!-- El bundle es UMD y autoestilado (el CSS va inyectado por JS). -->
+    <script src="https://bravo.goberna.us/bravo-admin.umd.js"></script>
+  </body>
+</html>

@@ -1,11 +1,11 @@
-import { Header, Hero, Noticias, Footer } from "../sections";
+import { Header, Hero, Noticias, Footer, noticias } from "../sections";
 
 export function Home() {
   return (
     <>
       <Header />
       <Hero />
-      <Noticias />
+      <Noticias noticias={noticias} />
       <Footer />
     </>
   );

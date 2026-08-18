@@ -6,6 +6,8 @@
     "module": "esnext",
     "types": ["vite/client"],
     "allowArbitraryExtensions": true,
+    /* noticias.generado.json / semilla.json se importan como módulos */
+    "resolveJsonModule": true,
     "skipLibCheck": true,
 
     /* Bundler mode */

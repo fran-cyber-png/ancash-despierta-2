@@ -5,16 +5,31 @@ name: Deploy
 # se hace el build del merge commit + rsync.
 #
 # OJO con el cruce de nombres, es a propósito y confunde:
-#   este repo (landing-huascaran)  ->  ancashdespierta.com
-#   repo lavozdeancash             ->  vozhuascaran.com
+#   este repo (landing-huascaran)  ->  ancashdespierta.com   (tenant Bravo: ancashdespierta)
+#   repo lavozdeancash             ->  vozhuascaran.com      (tenant Bravo: vozhuascaran)
+#
+# Las noticias las publica la redacción desde https://ancashdespierta.com/panel/. Al publicar,
+# la API de Bravo dispara este workflow por `workflow_dispatch`; el build baja los artículos del
+# endpoint público (por loopback, mismo host) y prerenderiza un index.html por nota.
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Red de seguridad (defensa en profundidad, NO el mecanismo primario): si un dispatch se
+  # perdió o el runner estuvo caído, esto lo recupera en <= 15 min. Sólo buildea si el JSON
+  # público cambió respecto del último deploy.
+  schedule:
+    - cron: "*/15 * * * *"
 
 concurrency:
   group: deploy-huascaran
   cancel-in-progress: false
+
+env:
+  # LITERAL 127.0.0.1: ::1 no está bindeado y un cliente IPv6-first fallaría con "localhost".
+  BRAVO_API_URL: http://127.0.0.1:4080
+  BRAVO_TENANT: ancashdespierta
+  DOCROOT: /home/huascaran/web/ancashdespierta.com/public_html
 
 jobs:
   deploy:
@@ -23,26 +38,121 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: ¿Hace falta buildear?
+        id: gate
+        run: |
+          set -euo pipefail
+          CACHE_HASH="$HOME/.cache/ancashdespierta-bravo-articles.hash"
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "construir=si" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Corrida programada: sólo seguimos si el JSON público cambió.
+          if ! HASH=$(curl -fsS --max-time 10 "$BRAVO_API_URL/v1/public/articles?tenant=$BRAVO_TENANT&status=published" | sha256sum | cut -d' ' -f1); then
+            echo "Bravo no responde; se salta la corrida programada (no se toca el sitio)."
+            echo "construir=no" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ -f "$CACHE_HASH" ] && [ "$HASH" = "$(cat "$CACHE_HASH")" ]; then
+            echo "Sin cambios en Bravo ($HASH); no se buildea."
+            echo "construir=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "Cambió el contenido de Bravo ($HASH) -> build."
+            echo "construir=si" >> "$GITHUB_OUTPUT"
+          fi
+
       # clean:false -> preserva node_modules/ del run anterior en el runner (deploy más rápido)
       - uses: actions/checkout@v5
+        if: steps.gate.outputs.construir == 'si'
         with:
           clean: false
 
       - uses: actions/setup-node@v5
+        if: steps.gate.outputs.construir == 'si'
         with:
           node-version: 22
 
       - name: Build
+        if: steps.gate.outputs.construir == 'si'
         run: |
           set -euo pipefail
           npm install --prefer-offline --no-audit --no-fund
           npm run build
 
-      - name: Guard dist + rsync local al docroot
+      - name: Guard de artículos + rsync local al docroot
+        if: steps.gate.outputs.construir == 'si'
         run: |
           set -euo pipefail
-          DOCROOT=/home/huascaran/web/ancashdespierta.com/public_html
-          # GUARD: rsync --delete con dist/ vacío borraría el sitio. Abortar si no hay archivos.
+
+          # Qué hizo el bake: ¿habló con Bravo en vivo y con cuántos artículos volvió?
+          # Lo escribe scripts/fetch-noticias.mjs. Distingue "Bravo dice 0" de "no hubo Bravo",
+          # que es justo lo que el conteo de directorios no puede distinguir por sí solo.
+          if [ -f .bake-estado.json ]; then
+            VIVO=$(node -p "JSON.parse(require('fs').readFileSync('.bake-estado.json','utf8')).vivo === true ? 'si' : 'no'")
+            BAKE_N=$(node -p "Number(JSON.parse(require('fs').readFileSync('.bake-estado.json','utf8')).articulos ?? -1)")
+          else
+            echo "::warning::no hay .bake-estado.json; se aplica el guard anti-caída estricto"
+            VIVO=no
+            BAKE_N=-1
+          fi
+          echo "bake: vivo=$VIVO articulos=$BAKE_N"
+
+          # GUARD 1: el prerender tiene que haber emitido al menos un artículo.
+          # El `|| true` es necesario: con pipefail, un dist/noticia inexistente mataría el
+          # step acá y nunca se vería el mensaje de error de abajo.
+          N=$(find dist/noticia -name index.html -type f 2>/dev/null | wc -l | tr -d ' ' || true)
+          [ "$N" -ge 1 ] || { echo "::error::el prerender produjo 0 artículos"; exit 1; }
+
+          # El docroot lo escribe el rsync como root pero se lee sin privilegios; si no se
+          # pudiera leer, los guards 2 y 3 se darían por buenos sin haber comparado nada. Por
+          # eso primero se exige ver el directorio: un ancestro sin o+x tiene que salir en rojo
+          # con un mensaje claro, no colarse como "no había nada publicado".
+          [ -d "$DOCROOT" ] || { echo "::error::no se puede leer $DOCROOT: los guards no se pueden evaluar"; exit 1; }
+          PREV=$(find "$DOCROOT/noticia" -name index.html -type f 2>/dev/null | wc -l | tr -d ' ' || true)
+
+          # GUARD 2: si Bravo devolvió 0 artículos, lo que hay en dist/ es la SEMILLA.
+          # Publicarla encima de notas vivas las despublica y deja URLs indexadas en 404.
+          # Es un estado que pide intervención humana, no un reintento automático.
+          if [ "$BAKE_N" -eq 0 ] && [ "$PREV" -gt 0 ]; then
+            echo "::error::Bravo devolvió 0 artículos y el docroot tiene $PREV; no se publica la semilla encima. Revisá el panel (¿se despublicó todo?) antes de reintentar."
+            exit 1
+          fi
+
+          # GUARD 3 (anti-caída): sólo cuando el build NO habló con Bravo. Si habló, que el
+          # conteo baje es una despublicación editorial legítima (retirar una nota errada) y
+          # tiene que poder publicarse: con el conteo a secas, el deploy quedaba trabado para
+          # siempre y el cron reintentaba en rojo cada 15 min.
+          if [ "$VIVO" != "si" ]; then
+            [ "$N" -ge "$PREV" ] || { echo "::error::build sin datos de Bravo y el conteo cae ($PREV -> $N); abortado"; exit 1; }
+          fi
+
+          # GUARD 4: dist/ no puede estar vacío (paranoia sobre el --delete).
           [ -n "$(find dist -mindepth 1 -type f -print -quit)" ] || { echo "::error::dist/ vacío -> abort (no se toca el docroot)"; exit 1; }
-          sudo rsync -rl --delete --chmod=D755,F644 dist/ "$DOCROOT/"
-          echo "deploy OK -> $DOCROOT"
+
+          # Pasada 1 SIN --delete: sube primero los archivos nuevos (assets con hash). Si se
+          # borrara antes de subir, un /assets/*.js inexistente se cachea 4h en el edge.
+          sudo rsync -rlt --chmod=D755,F644 dist/ "$DOCROOT/"
+          # Pasada 2 CON --delete: limpia lo que ya no existe. -t (mtime) evita retransmitir todo.
+          sudo rsync -rlt --delete --chmod=D755,F644 dist/ "$DOCROOT/"
+          echo "deploy OK -> $DOCROOT ($N artículo(s))"
+
+      - name: Recordar el hash publicado
+        if: steps.gate.outputs.construir == 'si'
+        run: |
+          set -euo pipefail
+          CACHE_HASH="$HOME/.cache/ancashdespierta-bravo-articles.hash"
+          # El hash sale de .bake-estado.json: es el sha256 del cuerpo que ESTE build consumió,
+          # no el de una consulta posterior al deploy. Si alguien publica entre el build y este
+          # paso, esa nota tiene que seguir contando como pendiente para el cron; con el curl de
+          # después se guardaba el hash de algo que nunca se publicó y no se recuperaba nunca.
+          if [ ! -f .bake-estado.json ]; then
+            echo "Sin .bake-estado.json; la próxima corrida programada buildeará igual."
+            exit 0
+          fi
+          HASH=$(node -p "JSON.parse(require('fs').readFileSync('.bake-estado.json','utf8')).hash || ''")
+          if [ -z "$HASH" ]; then
+            echo "El build salió del snapshot (Bravo no respondió); no se recuerda ningún hash."
+            exit 0
+          fi
+          mkdir -p "$(dirname "$CACHE_HASH")"
+          printf '%s' "$HASH" > "$CACHE_HASH"

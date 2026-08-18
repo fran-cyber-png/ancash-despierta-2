@@ -27,3 +27,171 @@ body {
   font-family: var(--font-body);
   background-color: #ffffff;
 }
+
+/* ---------------------------------------------------------------------------
+   Cuerpo del artículo (HTML del editor de Bravo).
+   TODO cuelga de la etiqueta, nunca de una clase: el saneador descarta
+   class/style/id, así que dentro de este bloque no hay utilidades de Tailwind.
+   La misma hoja la usa el HTML que inyecta scripts/prerender.mjs.
+   --------------------------------------------------------------------------- */
+.cuerpo-articulo {
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 22px;
+  color: rgb(0 0 0 / 0.75);
+  overflow-wrap: break-word;
+}
+
+.cuerpo-articulo > * + * {
+  margin-top: 15px;
+}
+
+.cuerpo-articulo h2 {
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.cuerpo-articulo h3 {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.cuerpo-articulo h4 {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.cuerpo-articulo strong,
+.cuerpo-articulo b {
+  font-weight: 700;
+  color: #000000;
+}
+
+.cuerpo-articulo em,
+.cuerpo-articulo i {
+  font-style: italic;
+}
+
+.cuerpo-articulo u {
+  text-decoration: underline;
+}
+
+.cuerpo-articulo s {
+  text-decoration: line-through;
+}
+
+/* a[href] y no `a`: el saneador puede dejar un <a> sin href (URL ejecutable
+   descartada) y no queremos que parezca un enlace vivo. */
+.cuerpo-articulo a[href] {
+  color: var(--color-brand-red);
+  text-decoration: underline;
+}
+
+/* Listas: la viñeta va por CSS obligatoriamente — <span> no está en la whitelist
+   del saneador de Bravo, así que no se puede pintar con markup. */
+.cuerpo-articulo ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.cuerpo-articulo ul li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.cuerpo-articulo ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-brand-red);
+}
+
+.cuerpo-articulo ol {
+  list-style: decimal;
+  padding-left: 20px;
+}
+
+/* TipTap anida <p> dentro de cada <li>; sin esto la lista se abre el doble. */
+.cuerpo-articulo li > p {
+  margin: 0;
+}
+
+.cuerpo-articulo li + li {
+  margin-top: 15px;
+}
+
+.cuerpo-articulo blockquote {
+  border-left: 3px solid var(--color-brand-red);
+  padding-left: 15px;
+  font-style: italic;
+}
+
+.cuerpo-articulo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cuerpo-articulo figure {
+  margin: 0;
+}
+
+.cuerpo-articulo figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-muted);
+}
+
+.cuerpo-articulo code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--color-card);
+  padding: 2px 4px;
+}
+
+.cuerpo-articulo pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  line-height: 20px;
+  background: var(--color-card);
+  padding: 15px;
+  overflow-x: auto;
+}
+
+.cuerpo-articulo pre code {
+  background: none;
+  padding: 0;
+}
+
+.cuerpo-articulo hr {
+  border: 0;
+  border-top: 1px solid var(--color-card-border);
+}
+
+@media (min-width: 1280px) {
+  .cuerpo-articulo {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .cuerpo-articulo h2 {
+    font-size: 26px;
+    line-height: 31px;
+  }
+
+  .cuerpo-articulo h3 {
+    font-size: 20px;
+    line-height: 26px;
+  }
+}

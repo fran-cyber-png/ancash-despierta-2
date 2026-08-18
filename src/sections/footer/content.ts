@@ -1,6 +1,8 @@
 export const footer = {
   marca: {
-    logo: "/assets/logo-footer.png",
+    // El pie usa la MISMA marca que el header. El `logo-footer.png` original se borró: era
+    // el escudo de "HUARAZ AL DÍA" (otro medio) y encima repetía el lema que ya va al lado.
+    logo: "/assets/logo-header.png",
     alt: "Áncash Despierta",
     linea1: "Conectando",
     linea2: "nuestra región",
@@ -16,8 +18,8 @@ export const footer = {
   },
   contacto: {
     titulo: "Contacto",
-    email: "contacto@vozhuascaran.com",
-    facebook: { nombre: "La Voz de Áncash", href: "#" },
+    email: "contacto@ancashdespierta.com",
+    facebook: { nombre: "Áncash Despierta", href: "#" },
   },
-  legal: ["Derechos reservados", "Voz Huascarán Perú"],
+  legal: ["Derechos reservados", "Áncash Despierta"],
 } as const;

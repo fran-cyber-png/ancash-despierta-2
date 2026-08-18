@@ -1,8 +1,11 @@
-import { articulo } from "./content";
-import type { Noticia } from "../noticias";
+import { articulo, redesCompartir } from "./content";
+import { urlCanonica, type Noticia } from "../noticias";
+import { sanear } from "../../utils/sanear";
 
 export function Articulo({ noticia }: { noticia: Noticia }) {
   const { compartir, etiquetas } = articulo;
+  const redes = redesCompartir(urlCanonica(noticia), noticia.titulo);
+  const categorias = noticia.categoria ? [noticia.categoria] : [];
 
   return (
     <article className="w-full bg-paper px-[20px] pt-[50px] pb-[70px] desk:bg-white desk:px-0 desk:pt-[75px] desk:pb-[188px]">
@@ -21,15 +24,13 @@ export function Articulo({ noticia }: { noticia: Noticia }) {
             )}
           </div>
 
-          <div className="flex flex-col gap-[15px] font-display text-[14px] leading-[22px] text-black/75 desk:text-[16px] desk:leading-[24px]">
-            {noticia.contenido.map((bloque, i) => (
-              <div key={i} className="flex flex-col">
-                {bloque.map((linea, j) => (
-                  <p key={j}>{linea}</p>
-                ))}
-              </div>
-            ))}
-          </div>
+          {/* El cuerpo llega como HTML del editor de Bravo (h2/h3/ul/ol/blockquote…).
+              La tipografía se define por etiqueta en `.cuerpo-articulo` (src/index.css):
+              el saneador descarta class/style, así que no se puede estilar con clases. */}
+          <div
+            className="cuerpo-articulo"
+            dangerouslySetInnerHTML={{ __html: sanear(noticia.bodyHtml) }}
+          />
         </div>
 
         <div className="flex items-start justify-between desk:items-center">
@@ -39,10 +40,12 @@ export function Articulo({ noticia }: { noticia: Noticia }) {
               <span className="hidden desk:inline">{compartir.tituloDesk}</span>
             </p>
             <div className="flex items-center gap-[10px]">
-              {compartir.redes.map((red) => (
+              {redes.map((red) => (
                 <a
                   key={red.nombre}
                   href={red.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={`Compartir en ${red.nombre}`}
                   className={`flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full desk:h-[50px] desk:w-[50px] ${
                     red.claro ? "bg-white" : "bg-brand-ink"
@@ -59,19 +62,21 @@ export function Articulo({ noticia }: { noticia: Noticia }) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-[10px] desk:flex-row desk:items-center desk:gap-[5px]">
-            <p className="font-ui text-[16px] leading-[24px] font-bold whitespace-nowrap text-brand-ink desk:font-display desk:text-[18px] desk:leading-[27px]">
-              {etiquetas.titulo}
-            </p>
-            {noticia.etiquetas.map((etiqueta) => (
-              <p
-                key={etiqueta}
-                className="font-ui text-[14px] leading-[21px] font-medium text-brand-ink desk:font-display desk:text-[16px] desk:leading-[24px] desk:text-black"
-              >
-                {etiqueta}
+          {categorias.length > 0 && (
+            <div className="flex flex-col gap-[10px] desk:flex-row desk:items-center desk:gap-[5px]">
+              <p className="font-ui text-[16px] leading-[24px] font-bold whitespace-nowrap text-brand-ink desk:font-display desk:text-[18px] desk:leading-[27px]">
+                {etiquetas.titulo}
               </p>
-            ))}
-          </div>
+              {categorias.map((categoria) => (
+                <p
+                  key={categoria}
+                  className="font-ui text-[14px] leading-[21px] font-medium text-brand-ink desk:font-display desk:text-[16px] desk:leading-[24px] desk:text-black"
+                >
+                  {categoria}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </article>

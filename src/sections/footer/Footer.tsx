@@ -16,10 +16,11 @@ export function Footer() {
       <div className="mx-auto flex max-w-[430px] flex-col gap-[36px] desk:max-w-[1180px] desk:gap-[32px]">
         <div className="flex flex-col gap-[36px] desk:flex-row desk:items-start desk:justify-between desk:gap-[24px]">
           <div className="flex w-full flex-col items-center gap-[18px] desk:w-auto desk:flex-row desk:items-center desk:gap-[24px]">
+            {/* El símbolo es apaisado (252×136); se conserva el ancho del slot del Figma. */}
             <img
               src={marca.logo}
               alt={marca.alt}
-              className="h-[147px] w-[147px] shrink-0 object-contain"
+              className="h-[80px] w-[147px] shrink-0 object-contain"
             />
             <p className="text-center font-ui text-[26px] leading-[32px] desk:text-left desk:text-[38px] desk:leading-[46px]">
               {marca.linea1}

@@ -1,7 +1,7 @@
-import { noticias } from "./content";
 import { NoticiaCard } from "./NoticiaCard";
+import type { Noticia } from "./content";
 
-export function Noticias() {
+export function Noticias({ noticias }: { noticias: Noticia[] }) {
   return (
     <section
       id="noticias"
@@ -9,7 +9,7 @@ export function Noticias() {
     >
       <div className="mx-auto flex max-w-[416px] flex-col gap-[30px] desk:grid desk:max-w-[1302px] desk:grid-cols-3">
         {noticias.map((n) => (
-          <NoticiaCard key={n.id} noticia={n} />
+          <NoticiaCard key={n.slug} noticia={n} />
         ))}
       </div>
     </section>

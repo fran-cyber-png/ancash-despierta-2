@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Puente entre el bake y el guard de deploy.yml (vivo/articulos/hash). Se regenera en cada
+# build; no se commitea.
+.bake-estado.json

@@ -31,5 +31,10 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Build (tsc + vite)
+      - name: Build (bake + tsc + vite + prerender)
+        # En un runner de GitHub no existe el loopback a bravo_api: se apunta directo a la
+        # API pública. Si tampoco responde, el bake conserva el snapshot commiteado.
+        env:
+          BRAVO_API_URL: https://bravo.goberna.us
+          BRAVO_TENANT: ancashdespierta
         run: npm run build
