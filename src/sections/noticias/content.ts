@@ -15,39 +15,40 @@ export const noticias: Noticia[] = [
     imagen: "/assets/noticia-1.png",
     href: "#",
   },
-  {
-    id: "noticia-2",
-    titulo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
-    resumen:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad...",
-    href: "#",
-  },
-  {
-    id: "noticia-3",
-    titulo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
-    resumen:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad...",
-    href: "#",
-  },
-  {
-    id: "noticia-4",
-    titulo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
-    resumen:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad...",
-    href: "#",
-  },
-  {
-    id: "noticia-5",
-    titulo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
-    resumen:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad...",
-    href: "#",
-  },
-  {
-    id: "noticia-6",
-    titulo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
-    resumen:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad...",
-    href: "#",
-  },
+  // Placeholders del Figma — descomentar y reemplazar por noticias reales.
+  // {
+  //   id: "noticia-2",
+  //   titulo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
+  //   resumen:
+  //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad...",
+  //   href: "#",
+  // },
+  // {
+  //   id: "noticia-3",
+  //   titulo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
+  //   resumen:
+  //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad...",
+  //   href: "#",
+  // },
+  // {
+  //   id: "noticia-4",
+  //   titulo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
+  //   resumen:
+  //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad...",
+  //   href: "#",
+  // },
+  // {
+  //   id: "noticia-5",
+  //   titulo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
+  //   resumen:
+  //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad...",
+  //   href: "#",
+  // },
+  // {
+  //   id: "noticia-6",
+  //   titulo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
+  //   resumen:
+  //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad...",
+  //   href: "#",
+  // },
 ];
