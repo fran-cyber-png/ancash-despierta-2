@@ -1,6 +1,8 @@
 export const articulo = {
   compartir: {
+    /** El frame mobile dice "Comparte:" y el desktop "Comparte en:". */
     titulo: "Comparte:",
+    tituloDesk: "Comparte en:",
     /** El primero va en círculo blanco con ícono oscuro; el resto en #450003
      *  con ícono blanco (tal cual el Figma). */
     redes: [

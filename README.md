@@ -4,7 +4,8 @@ Landing **Áncash Despierta** (Voz Huascarán). React 19 + Vite + TypeScript + T
 
 Diseño: Figma `ÁNCASH DESPIERTA` — archivo `fkpGJ8o2qT95sfhsTfOoCA`.
 Implementación **mobile-first** a partir de los frames `7:267` (home mobile, 430 × 5398),
-`7:297` (interno / artículo mobile, 430 × 1351) y `7:172` (home desktop, 1366 × 2485).
+`7:297` (interno / artículo mobile, 430 × 1351), `7:172` (home desktop, 1366 × 2485)
+y `7:173` (interno desktop, 1366 × 1539).
 
 ## Estructura
 
@@ -61,6 +62,11 @@ fijos con contenedores centrados, y a 1920 coincide al pixel con el master
 | Hero (16:9) | 768px de alto | 1080px |
 | Grid de noticias | 1302px (32px de margen) | 1302px centrado |
 | Footer | 1126px (px-120) | 1180px |
+| Artículo | columna de 780px centrada | 780px centrada |
+
+En el interno, el desktop además cambia el fondo (`#f6faff` → blanco), pasa los títulos y
+etiquetas de Montserrat a Inter, y pone *Comparte en:* + botones de 50px y *Etiquetas:* en
+una sola fila (en mobile van apilados y los botones son de 40px).
 
 ## Tokens
 
