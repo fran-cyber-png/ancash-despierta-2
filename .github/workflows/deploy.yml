@@ -1,0 +1,48 @@
+name: Deploy
+
+# Deploy de la landing Huascarán a vps2, INLINE. El runner (vps2-huascaran-runner) corre EN vps2,
+# así que el rsync al docroot es LOCAL (sin red). ci.yml ya valida lint+build en el PR; acá solo
+# se hace el build del merge commit + rsync.
+#
+# OJO con el cruce de nombres, es a propósito y confunde:
+#   este repo (landing-huascaran)  ->  ancashdespierta.com
+#   repo lavozdeancash             ->  vozhuascaran.com
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-huascaran
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, vps2-huascaran]   # runner vps2-huascaran-runner (corre EN vps2)
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      # clean:false -> preserva node_modules/ del run anterior en el runner (deploy más rápido)
+      - uses: actions/checkout@v5
+        with:
+          clean: false
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Build
+        run: |
+          set -euo pipefail
+          npm install --prefer-offline --no-audit --no-fund
+          npm run build
+
+      - name: Guard dist + rsync local al docroot
+        run: |
+          set -euo pipefail
+          DOCROOT=/home/huascaran/web/ancashdespierta.com/public_html
+          # GUARD: rsync --delete con dist/ vacío borraría el sitio. Abortar si no hay archivos.
+          [ -n "$(find dist -mindepth 1 -type f -print -quit)" ] || { echo "::error::dist/ vacío -> abort (no se toca el docroot)"; exit 1; }
+          sudo rsync -rl --delete --chmod=D755,F644 dist/ "$DOCROOT/"
+          echo "deploy OK -> $DOCROOT"

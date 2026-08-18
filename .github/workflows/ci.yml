@@ -1,0 +1,35 @@
+name: CI
+
+# Gate de CI para PRs: corre lint + build en cada Pull Request, ANTES de mergear.
+# Un PR roto se ve en rojo acá y no llega a main (que deploya a vps2 / ancashdespierta.com).
+# Corre en ubuntu-latest (GitHub-hosted, efímero): acá `cache: npm` SÍ conviene.
+on:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install deps
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build (tsc + vite)
+        run: npm run build
