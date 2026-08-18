@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { articulo, redesCompartir } from "./content";
 import { urlCanonica, type Noticia } from "../noticias";
 import { sanear } from "../../utils/sanear";
@@ -12,6 +13,19 @@ export function Articulo({ noticia }: { noticia: Noticia }) {
       <div className="mx-auto flex max-w-[390px] flex-col gap-[70px] desk:max-w-[780px]">
         <div className="flex flex-col gap-[50px]">
           <div className="flex flex-col gap-[15px]">
+            <Link
+              to="/"
+              className="inline-flex w-fit items-center gap-[10px] font-ui text-[32px] font-bold text-brand-red-dark"
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 448 512"
+                className="h-[28px] w-[28px] shrink-0 fill-current"
+              >
+                <path d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z" />
+              </svg>
+              Inicio
+            </Link>
             <h1 className="font-ui text-[40px] leading-[38px] font-bold uppercase text-black desk:font-display desk:text-[48px] desk:leading-[57.6px]">
               {noticia.titulo}
             </h1>
