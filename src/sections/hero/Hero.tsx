@@ -16,12 +16,14 @@ export function Hero() {
 
   return (
     <section className="relative w-full overflow-hidden">
-      {/* El Header flota fijo encima (no ocupa espacio propio), así que el Hero
-          solo, a 100vh, ya cubre toda la pantalla en la primera vista. Las
-          fotos van apiladas y sólo cambia su opacidad: así el crossfade es
-          suave y no hay salto de layout entre una y otra. `object-cover`
-          recorta la imagen para llenar el alto sin deformarla. */}
-      <div className="relative h-screen min-h-[480px] w-full">
+      {/* El Header flota fijo encima (no ocupa espacio propio) y la barra
+          "Último momento" (Categorías) va justo debajo del Hero en el flujo
+          normal: restándole su alto (56/80px) al 100vh, el banner + la barra
+          llenan exactos la primera pantalla y la barra queda visible sin
+          scroll. Las fotos van apiladas y sólo cambia su opacidad: así el
+          crossfade es suave y no hay salto de layout entre una y otra.
+          `object-cover` recorta la imagen para llenar el alto sin deformarla. */}
+      <div className="relative h-[calc(100vh-56px)] min-h-[420px] w-full desk:h-[calc(100vh-80px)]">
         {hero.imagenes.map((imagen, i) => (
           <img
             key={imagen.src}
@@ -34,8 +36,10 @@ export function Hero() {
         ))}
       </div>
 
-      {/* Degradado del frame: opaco a la izquierda, transparente al 71% del ancho. */}
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.78)_0%,rgba(0,0,0,0.55)_40%,rgba(0,0,0,0)_71%)]" />
+      {/* Degradado del frame: opaco a la izquierda, transparente al 71% del ancho.
+          En mobile (430w del Figma) va más suave: la foto ocupa toda la franja
+          angosta y con la fuerza del desktop se veía demasiado oscura. */}
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.3)_40%,rgba(0,0,0,0)_71%)] desk:bg-[linear-gradient(90deg,rgba(0,0,0,0.78)_0%,rgba(0,0,0,0.55)_40%,rgba(0,0,0,0)_71%)]" />
 
       <div className="absolute inset-0">
         <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col justify-center gap-[20px] px-[20px] desk:gap-[28px] desk:px-[40px]">

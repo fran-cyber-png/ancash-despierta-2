@@ -41,19 +41,24 @@ export function IconoFlecha({ className }: Props) {
 export function IconoMegafono({ className }: Props) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
-      <path
-        d="M3 10v4a1 1 0 0 0 1 1h3l7 4V5L7 9H4a1 1 0 0 0-1 1Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M17.5 9a4 4 0 0 1 0 6M7 15v4h3v-3"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      {/* El trazo real queda descentrado dentro del viewBox (bbox x:3–18.85,
+          centro en 10.93 en vez de 12): se corrige con un translate en vez de
+          tocar las coordenadas de cada trazo. */}
+      <g transform="translate(1.07 0)">
+        <path
+          d="M3 10v4a1 1 0 0 0 1 1h3l7 4V5L7 9H4a1 1 0 0 0-1 1Z"
+          stroke="currentColor"
+          strokeWidth="1.35"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M17.5 9a4 4 0 0 1 0 6M7 15v4h3v-3"
+          stroke="currentColor"
+          strokeWidth="1.35"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
     </svg>
   );
 }
@@ -61,19 +66,22 @@ export function IconoMegafono({ className }: Props) {
 export function IconoInformar({ className }: Props) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
-      <path
-        d="M5 4h9l5 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M14 4v5h5M8 13h8M8 17h5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      {/* Bbox real x:4–19/y:4–21, centro en (11.5, 12.5) en vez de (12, 12). */}
+      <g transform="translate(0.5 -0.5)">
+        <path
+          d="M5 4h9l5 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"
+          stroke="currentColor"
+          strokeWidth="1.35"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M14 4v5h5M8 13h8M8 17h5"
+          stroke="currentColor"
+          strokeWidth="1.35"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
     </svg>
   );
 }
@@ -81,12 +89,12 @@ export function IconoInformar({ className }: Props) {
 export function IconoEquipo({ className }: Props) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
-      <circle cx="9" cy="8" r="3.2" stroke="currentColor" strokeWidth="1.8" />
-      <circle cx="17" cy="9.5" r="2.4" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="9" cy="8" r="3.2" stroke="currentColor" strokeWidth="1.35" />
+      <circle cx="17" cy="9.5" r="2.4" stroke="currentColor" strokeWidth="1.35" />
       <path
         d="M3 19c0-3 2.7-4.8 6-4.8s6 1.8 6 4.8M16.2 14.6c2.7.3 4.8 1.9 4.8 4.4"
         stroke="currentColor"
-        strokeWidth="1.8"
+        strokeWidth="1.35"
         strokeLinecap="round"
       />
     </svg>

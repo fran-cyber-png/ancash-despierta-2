@@ -110,8 +110,10 @@ export function Articulo({ noticia, otras }: { noticia: Noticia; otras: Noticia[
           pensado para flotar sobre el Hero, tapa el titular acá. */}
       <div className="w-full bg-panel">
         <div className="mx-auto flex w-full max-w-[1600px] flex-col items-center px-[20px] pt-[108px] desk:px-[40px] desk:pt-[160px]">
-          <h1 className="text-center font-titulo text-[28px] leading-[1.2] font-normal text-tinta desk:max-w-[1180px] desk:text-[56px]">
-            {fuerte && <span className="font-bold">{fuerte}</span>}
+          {/* Todo el titular va en bold ahora (antes solo la parte antes de
+              los ":", ver partirTitulo en utils/formato.ts). */}
+          <h1 className="text-center font-titulo text-[28px] leading-[1.2] font-bold text-tinta desk:max-w-[1180px] desk:text-[56px]">
+            {fuerte}
             {resto}
           </h1>
 
