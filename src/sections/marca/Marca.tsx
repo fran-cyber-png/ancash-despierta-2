@@ -3,7 +3,10 @@ import { marca } from "./content";
 /** Banda roja de 600px: la firma del medio con la cordillera cortada en diagonal. */
 export function Marca() {
   return (
-    <section className="relative w-full overflow-hidden bg-rojo-banda">
+    <section
+      id="nosotros"
+      className="relative w-full scroll-mt-[72px] overflow-hidden bg-rojo-banda desk:scroll-mt-[100px]"
+    >
       <div className="relative flex min-h-[320px] w-full flex-col justify-center desk:min-h-[600px]">
         {/* La foto entra por la derecha; el corte diagonal amarillo del XD se
             resuelve con clip-path para no depender de un PNG con la diagonal
@@ -20,12 +23,12 @@ export function Marca() {
         />
 
         <div className="relative mx-auto w-full max-w-[1600px] px-[20px] py-[40px] desk:px-[40px] desk:py-0">
-          <p className="font-titulo text-[46px] leading-[1] font-bold italic text-white desk:text-[123px]">
+          <p className="font-titulo text-[46px] leading-[1] font-bold italic text-white desk:text-[96px]">
             {marca.linea1}
             <br />
             <span className="text-amarillo">{marca.linea2}</span>
           </p>
-          <p className="mt-[16px] max-w-[420px] font-texto text-[16px] leading-[1.3] font-normal italic text-white uppercase desk:mt-[28px] desk:max-w-[760px] desk:text-[38px]">
+          <p className="mt-[16px] max-w-[420px] font-texto text-[16px] leading-[1.3] font-normal italic text-white uppercase desk:mt-[28px] desk:max-w-[760px] desk:text-[30px]">
             {marca.lema}
           </p>
         </div>

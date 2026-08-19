@@ -4,10 +4,6 @@ export const articulo = {
   firma: "Redacción Áncash Despierta",
   /** Antecede a la fecha: "Áncash, 05 de agosto". */
   lugar: "Áncash",
-  migas: [
-    { texto: "Inicio", href: "/" },
-    { texto: "Blog", href: "/#lo-ultimo" },
-  ],
   volver: "Volver",
   recientes: "Artículos recientes",
   otrasCategorias: "Otras categorías",

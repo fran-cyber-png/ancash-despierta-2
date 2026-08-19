@@ -1,10 +1,6 @@
 /**
- * Formato de los metadatos que el XD muestra en cada tarjeta
- * ("18 AGO 2026 · 3 MIN DE LECTURA").
- *
- * Bravo no manda ninguno de los dos calculado: la fecha sale de `published_at`
- * y el tiempo de lectura se estima acá desde `body_html`. Si algún día el
- * endpoint agrega los campos, esto se borra.
+ * Formato de los metadatos que el XD muestra en cada tarjeta ("18 AGO 2026").
+ * Bravo no manda la fecha formateada: sale de `published_at`.
  */
 
 const MESES = [
@@ -40,22 +36,24 @@ export function fechaISO(iso: string | undefined): string | undefined {
 }
 
 /**
- * Estimación de lectura a 200 palabras por minuto, mínimo 1.
- * Se cuenta sobre el texto plano: las etiquetas del editor no son palabras.
+ * Los primeros `cantidad` párrafos del cuerpo, en texto plano. A diferencia
+ * de `extractoCuerpo` respeta los cortes reales del editor en vez de cortar
+ * por cantidad de caracteres; se usa donde hay espacio para mostrar más de
+ * un párrafo (p. ej. el hover de las tarjetas de DESTACADAS).
  */
-export function minutosLectura(bodyHtml: string): number {
-  const texto = bodyHtml
-    .replace(/<[^>]*>/g, " ")
-    .replace(/&[a-z]+;|&#\d+;/gi, " ")
-    .trim();
-  if (!texto) return 1;
-  const palabras = texto.split(/\s+/).length;
-  return Math.max(1, Math.round(palabras / 200));
-}
-
-/** "3 MIN DE LECTURA", tal cual el diseño. */
-export function etiquetaLectura(bodyHtml: string): string {
-  return `${minutosLectura(bodyHtml)} MIN DE LECTURA`;
+export function parrafosCuerpo(bodyHtml: string, cantidad: number): string[] {
+  const parrafos: string[] = [];
+  for (const m of bodyHtml.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)) {
+    const texto = m[1]
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&[a-z]+;|&#\d+;/gi, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!texto) continue;
+    parrafos.push(texto);
+    if (parrafos.length === cantidad) break;
+  }
+  return parrafos;
 }
 
 /**

@@ -18,10 +18,10 @@ export function TituloSeccion({
       {enlace && (
         <a
           href={enlace.href}
-          className="flex items-center gap-[8px] pt-[6px] font-texto text-[16px] font-bold text-rojo desk:text-[22px]"
+          className="group flex items-center gap-[8px] pt-[6px] font-texto text-[16px] font-bold text-rojo transition-colors duration-300 ease-in-out hover:text-rojo-banda desk:text-[22px]"
         >
           {enlace.texto}
-          <IconoFlecha className="h-[18px] w-[18px] shrink-0" />
+          <IconoFlecha className="h-[18px] w-[18px] shrink-0 transition-transform duration-300 ease-in-out group-hover:translate-x-[3px]" />
         </a>
       )}
     </div>

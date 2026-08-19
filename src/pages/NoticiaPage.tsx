@@ -27,7 +27,10 @@ export function NoticiaPage() {
             <p className="font-texto text-[16px] leading-[24px] text-meta">
               La nota que buscas no existe o fue retirada de portada.
             </p>
-            <Link to="/" className="font-texto text-[16px] font-bold text-rojo underline">
+            <Link
+              to="/"
+              className="font-texto text-[16px] font-bold text-rojo underline transition-colors duration-300 ease-in-out hover:text-rojo-banda"
+            >
               Volver al inicio
             </Link>
           </div>

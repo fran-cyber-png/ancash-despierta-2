@@ -5,7 +5,7 @@ export function Footer() {
   const { marca, enlaces, contacto, legal } = footer;
 
   return (
-    <footer id="unete" className="w-full bg-negro text-white">
+    <footer id="unete" className="w-full scroll-mt-[72px] bg-negro text-white desk:scroll-mt-[100px]">
       <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-[32px] px-[20px] py-[40px] desk:gap-[40px] desk:px-[40px] desk:py-[56px]">
         <div className="flex flex-col gap-[32px] desk:flex-row desk:items-start desk:justify-between desk:gap-[40px]">
           <div className="flex items-center gap-[16px] desk:gap-[20px]">
@@ -28,7 +28,10 @@ export function Footer() {
             <ul className="flex flex-col gap-[10px] desk:gap-[16px]">
               {enlaces.items.map((item) => (
                 <li key={item.href}>
-                  <a href={item.href} className="flex items-center gap-[10px]">
+                  <a
+                    href={item.href}
+                    className="flex items-center gap-[10px] transition-colors duration-300 ease-in-out hover:text-amarillo-titulo"
+                  >
                     <span className="h-[6px] w-[6px] shrink-0 rounded-full bg-white" />
                     <span className="font-ui text-[15px] desk:text-[16px]">{item.texto}</span>
                   </a>
@@ -41,10 +44,16 @@ export function Footer() {
             <p className="font-ui text-[16px] font-bold text-amarillo-titulo desk:text-[18px]">
               {contacto.titulo}
             </p>
-            <a href={`mailto:${contacto.email}`} className="font-ui text-[15px] desk:text-[16px]">
+            <a
+              href={`mailto:${contacto.email}`}
+              className="font-ui text-[15px] transition-colors duration-300 ease-in-out hover:text-amarillo-titulo desk:text-[16px]"
+            >
               {contacto.email}
             </a>
-            <a href={contacto.facebook.href} className="flex items-center gap-[10px]">
+            <a
+              href={contacto.facebook.href}
+              className="flex items-center gap-[10px] transition-colors duration-300 ease-in-out hover:text-amarillo-titulo"
+            >
               <span className="flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-full bg-white text-negro">
                 <IconoFacebook className="h-[16px] w-[16px]" />
               </span>

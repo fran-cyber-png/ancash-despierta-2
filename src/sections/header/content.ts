@@ -6,9 +6,9 @@ export const header = {
   // Anclas, nunca rutas nuevas: el vhost no tiene fallback de SPA y una ruta
   // client-side sin prerender da 404 duro por deep-link.
   menu: [
-    { texto: "INICIO", href: "/" },
-    { texto: "QUIENES SOMOS", href: "#quienes-somos" },
-    { texto: "LO QUE DEFENDEMOS", href: "#defendemos" },
+    { texto: "NOTICIA DEL DÍA", href: "#noticia-del-dia" },
+    { texto: "NOTICIAS", href: "#destacadas" },
+    { texto: "NOSOTROS", href: "#nosotros" },
   ],
-  cta: { texto: "ÚNETE", href: "#unete" },
+  cta: { texto: "INSCRÍBETE", href: "#unete" },
 } as const;

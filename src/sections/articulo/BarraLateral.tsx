@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { articulo } from "./content";
-import { etiquetaLectura, fechaCorta, fechaISO } from "../../utils/formato";
+import { fechaCorta, fechaISO } from "../../utils/formato";
 import { noticiaHref, type Noticia } from "../noticias";
 
 function ItemReciente({ noticia }: { noticia: Noticia }) {
@@ -10,22 +10,31 @@ function ItemReciente({ noticia }: { noticia: Noticia }) {
     <article className="flex items-start gap-[16px]">
       <Link
         to={noticiaHref(noticia.slug)}
-        className="block h-[100px] w-[110px] shrink-0 overflow-hidden bg-panel"
+        className="group block h-[100px] w-[110px] shrink-0 overflow-hidden bg-panel"
       >
         {noticia.imagen && (
-          <img src={noticia.imagen} alt={noticia.titulo} className="h-full w-full object-cover" />
+          <img
+            src={noticia.imagen}
+            alt={noticia.titulo}
+            className="h-full w-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
+          />
         )}
       </Link>
 
       <div className="flex min-w-0 flex-col gap-[6px]">
         <h3 className="font-texto text-[14px] leading-[1.3] font-bold uppercase text-tinta">
-          <Link to={noticiaHref(noticia.slug)}>{noticia.titulo}</Link>
+          <Link
+            to={noticiaHref(noticia.slug)}
+            className="transition-colors duration-300 ease-in-out hover:text-rojo"
+          >
+            {noticia.titulo}
+          </Link>
         </h3>
-        <p className="font-texto text-[13px] text-meta">
-          {fecha && <time dateTime={fechaISO(noticia.publishedAt)}>{fecha}</time>}
-          {fecha && " - "}
-          {etiquetaLectura(noticia.bodyHtml)}
-        </p>
+        {fecha && (
+          <p className="font-texto text-[13px] text-meta">
+            <time dateTime={fechaISO(noticia.publishedAt)}>{fecha}</time>
+          </p>
+        )}
       </div>
     </article>
   );
@@ -50,7 +59,7 @@ export function BarraLateral({ actual, otras }: { actual: Noticia; otras: Notici
   if (recientes.length === 0 && categorias.length === 0) return null;
 
   return (
-    <aside className="w-full shrink-0 desk:w-[433px] desk:border-l desk:border-black/12 desk:pl-[40px]">
+    <aside className="w-full shrink-0 desk:sticky desk:top-[120px] desk:w-[433px] desk:self-start desk:border-l desk:border-black/12 desk:pl-[40px]">
       {recientes.length > 0 && (
         <section>
           <h2 className="font-titulo text-[22px] font-normal text-tinta desk:text-[26px]">

@@ -9,7 +9,7 @@ const ICONOS = {
 
 export function Valores() {
   return (
-    <section id="defendemos" className="w-full bg-white">
+    <section id="defendemos" className="w-full scroll-mt-[72px] bg-white desk:scroll-mt-[100px]">
       <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-[28px] px-[20px] py-[40px] desk:grid-cols-3 desk:gap-0 desk:px-[40px] desk:py-[64px]">
         {valores.map((valor, i) => {
           const Icono = ICONOS[valor.id];

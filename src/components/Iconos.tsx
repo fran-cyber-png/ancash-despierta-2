@@ -24,15 +24,6 @@ export function IconoCalendario({ className }: Props) {
   );
 }
 
-export function IconoReloj({ className }: Props) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
-      <path d="M12 7v5.5l3.5 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 export function IconoFlecha({ className }: Props) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
@@ -138,6 +129,51 @@ export function IconoFacebook({ className }: Props) {
       <path
         fill="currentColor"
         d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
+      />
+    </svg>
+  );
+}
+
+export function IconoInstagram({ className }: Props) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function IconoWhatsapp({ className }: Props) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <path
+        d="M12 3a9 9 0 0 0-7.75 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.7 8.4c.2-.5.4-.5.6-.5h.5c.15 0 .35 0 .5.4.2.5.6 1.5.7 1.6.1.15.15.3.03.5-.5.8-1 .75-.6 1.4.9 1.4 1.6 1.8 2.9 2.4.2.1.35.1.5-.05.15-.15.6-.7.8-.95.2-.25.35-.2.6-.1.25.1 1.6.75 1.9.9.25.1.4.15.45.25.05.15.05.85-.25 1.35-.3.5-1.4 1-1.9 1.05-.5.05-1.05.1-3.4-.9-2.85-1.2-4.6-4.05-4.75-4.25-.15-.2-1.1-1.45-1.1-2.8s.7-2 1-2.3Z"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+/** Clip para "copiar enlace": no hay intent de compartir por URL para Instagram. */
+export function IconoClip({ className }: Props) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
+      <path
+        d="M8 12.5 15 5.5a3 3 0 0 1 4.24 4.24l-8.2 8.2a5 5 0 0 1-7.07-7.07l7.5-7.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

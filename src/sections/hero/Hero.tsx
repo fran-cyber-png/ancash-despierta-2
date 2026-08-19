@@ -1,15 +1,38 @@
+import { useEffect, useState } from "react";
 import { hero } from "./content";
 
+/** Cuánto se queda cada foto en pantalla antes de cruzar a la siguiente. */
+const INTERVALO_MS = 10_000;
+
 export function Hero() {
+  const [activa, setActiva] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiva((i) => (i + 1) % hero.imagenes.length);
+    }, INTERVALO_MS);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <section className="relative w-full overflow-hidden">
-      {/* 750px de alto en el XD (1920w). En mobile baja a 480 para que el
-          titular de 3 líneas siga entrando sin comerse la foto. */}
-      <img
-        src={hero.imagen}
-        alt={hero.alt}
-        className="h-[480px] w-full object-cover desk:h-[750px]"
-      />
+      {/* El Header flota fijo encima (no ocupa espacio propio), así que el Hero
+          solo, a 100vh, ya cubre toda la pantalla en la primera vista. Las
+          fotos van apiladas y sólo cambia su opacidad: así el crossfade es
+          suave y no hay salto de layout entre una y otra. `object-cover`
+          recorta la imagen para llenar el alto sin deformarla. */}
+      <div className="relative h-screen min-h-[480px] w-full">
+        {hero.imagenes.map((imagen, i) => (
+          <img
+            key={imagen.src}
+            src={imagen.src}
+            alt={imagen.alt}
+            className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
+              i === activa ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
+      </div>
 
       {/* Degradado del frame: opaco a la izquierda, transparente al 71% del ancho. */}
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.78)_0%,rgba(0,0,0,0.55)_40%,rgba(0,0,0,0)_71%)]" />
@@ -29,8 +52,10 @@ export function Hero() {
               <a
                 key={accion.href}
                 href={accion.href}
-                className={`flex h-[48px] items-center justify-center px-[24px] font-titulo text-[15px] font-bold whitespace-nowrap text-white desk:h-[64px] desk:px-0 desk:text-[21px] ${accion.ancho} ${
-                  accion.tono === "rojo" ? "bg-rojo" : "border-2 border-white bg-transparent"
+                className={`flex h-[48px] items-center justify-center px-[28px] font-titulo text-[15px] font-bold whitespace-nowrap text-white transition-colors duration-300 ease-in-out desk:h-[64px] desk:px-[40px] desk:text-[21px] ${
+                  accion.tono === "rojo"
+                    ? "bg-rojo hover:bg-rojo-banda"
+                    : "border-2 border-white bg-transparent hover:bg-white/15"
                 }`}
               >
                 {accion.texto}
