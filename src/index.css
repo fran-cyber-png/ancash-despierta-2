@@ -11,6 +11,24 @@
   --color-paper: #f6faff;
   --color-brand-ink: #450003;
 
+  /* Tokens del XD "02-ANCASH DESPIERTA" (artboard db4bc256, 1920w).
+     Conviven con los de arriba a propósito: los de arriba los sigue usando la
+     página de artículo, que ese XD no rediseña. */
+  --color-rojo: #cc0100;
+  --color-rojo-banda: #a70b02;
+  --color-azul: #023a7d;
+  --color-amarillo: #f5b502;
+  --color-amarillo-titulo: #f6b600;
+  --color-tinta: #06080a;
+  --color-meta: #747372;
+  --color-cuerpo: #656565;
+  --color-panel: #f5f7fa;
+  --color-negro: #121212;
+
+  --font-titulo: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-texto: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-nav: "Oswald", ui-sans-serif, system-ui, sans-serif;
+
   /* Breakpoint del diseño desktop del Figma (frames 1366w y 1920w) */
   --breakpoint-desk: 1280px;
 
@@ -35,10 +53,10 @@ body {
    La misma hoja la usa el HTML que inyecta scripts/prerender.mjs.
    --------------------------------------------------------------------------- */
 .cuerpo-articulo {
-  font-family: var(--font-display);
-  font-size: 14px;
-  line-height: 22px;
-  color: rgb(0 0 0 / 0.75);
+  font-family: var(--font-texto);
+  font-size: 15px;
+  line-height: 25px;
+  color: #3a3a3a;
   overflow-wrap: break-word;
 }
 
@@ -47,10 +65,12 @@ body {
 }
 
 .cuerpo-articulo h2 {
-  font-size: 22px;
-  line-height: 26px;
+  font-family: var(--font-titulo);
+  font-size: 21px;
+  line-height: 28px;
   font-weight: 700;
-  color: #000000;
+  color: var(--color-tinta);
+  margin-top: 28px;
 }
 
 .cuerpo-articulo h3 {
@@ -181,17 +201,22 @@ body {
 
 @media (min-width: 1280px) {
   .cuerpo-articulo {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 17px;
+    line-height: 29px;
+  }
+
+  .cuerpo-articulo > * + * {
+    margin-top: 18px;
   }
 
   .cuerpo-articulo h2 {
-    font-size: 26px;
-    line-height: 31px;
+    font-size: 24px;
+    line-height: 32px;
+    margin-top: 34px;
   }
 
   .cuerpo-articulo h3 {
     font-size: 20px;
-    line-height: 26px;
+    line-height: 28px;
   }
 }

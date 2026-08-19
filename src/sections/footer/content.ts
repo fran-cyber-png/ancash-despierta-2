@@ -1,8 +1,9 @@
 export const footer = {
   marca: {
-    // El pie usa la MISMA marca que el header. El `logo-footer.png` original se borró: era
-    // el escudo de "HUARAZ AL DÍA" (otro medio) y encima repetía el lema que ya va al lado.
-    logo: "/assets/logo-header.png",
+    // El diseño (XD y Figma) pone acá el escudo de HUARAZ AL DÍA, que es otro medio.
+    // Se usa la marca del portal a pedido de la redacción; el archivo del diseño
+    // queda en `/assets/logo-huaraz-2026.webp` por si se decide volver atrás.
+    logo: "/assets/logo-ancash-2026.webp",
     alt: "Áncash Despierta",
     linea1: "Conectando",
     linea2: "nuestra región",
@@ -21,5 +22,5 @@ export const footer = {
     email: "contacto@ancashdespierta.com",
     facebook: { nombre: "Áncash Despierta", href: "#" },
   },
-  legal: ["Derechos reservados", "Áncash Despierta"],
+  legal: { izquierda: "Derechos reservados", derecha: "Áncash Despierta" },
 } as const;

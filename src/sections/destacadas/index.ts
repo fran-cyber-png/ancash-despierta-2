@@ -1,0 +1,1 @@
+export { Destacadas } from "./Destacadas";

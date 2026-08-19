@@ -33,6 +33,31 @@ const LOGO = `${SITIO}/assets/logo-header.png`;
 const DESCRIPCION_SITIO =
   "Áncash Despierta, la voz de Huascarán. Noticias y actualidad de la región Áncash.";
 
+/** Espejo de `articulo.firma` en src/sections/articulo/content.ts (Node no importa TS). */
+const FIRMA = "Redacción Áncash Despierta";
+
+const MESES_LARGOS = [
+  "enero",
+  "febrero",
+  "marzo",
+  "abril",
+  "mayo",
+  "junio",
+  "julio",
+  "agosto",
+  "setiembre",
+  "octubre",
+  "noviembre",
+  "diciembre",
+];
+
+/** Espejo de `fechaLarga` en src/utils/formato.ts: "05 de agosto". */
+function fechaLarga(iso) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  return `Áncash, ${String(d.getUTCDate()).padStart(2, "0")} de ${MESES_LARGOS[d.getUTCMonth()]}`;
+}
+
 const SLUG_VALIDO = /^[a-z0-9-]+$/;
 
 function abortar(mensaje) {
@@ -252,11 +277,25 @@ function cabecera(noticia) {
  * `.cuerpo-articulo` sí existe siempre porque está declarado en src/index.css.
  */
 function cuerpo(noticia) {
+  // Mismo orden que src/sections/articulo/Articulo.tsx: titular, firma, portada,
+  // bajada y cuerpo. No replica la barra lateral: es navegación, no contenido de
+  // la nota, y duplicarla acá sólo ensucia lo que lee el crawler.
+  const corte = noticia.titulo.indexOf(":");
+  const titulo =
+    corte === -1
+      ? escaparTexto(noticia.titulo)
+      : `<strong>${escaparTexto(noticia.titulo.slice(0, corte + 1))}</strong>${escaparTexto(
+          noticia.titulo.slice(corte + 1),
+        )}`;
+
   const partes = [
-    '<div style="max-width:780px;margin:0 auto;padding:50px 20px 70px">',
-    `<a href="/" style="font-family:Montserrat,sans-serif;font-size:14px;color:#e7000b;text-decoration:none">${escaparTexto(NOMBRE)}</a>`,
+    '<div style="max-width:1010px;margin:0 auto;padding:50px 20px 70px">',
+    `<a href="/" style="font-family:'Open Sans',sans-serif;font-size:15px;color:#cc0100;text-decoration:none">Inicio</a>`,
     "<article>",
-    `<h1 style="font-family:Montserrat,sans-serif;font-size:40px;line-height:1;font-weight:700;text-transform:uppercase;color:#000;margin:15px 0">${escaparTexto(noticia.titulo)}</h1>`,
+    `<h1 style="font-family:Poppins,sans-serif;font-size:40px;line-height:1.2;font-weight:400;color:#06080a;margin:15px 0;text-align:center">${titulo}</h1>`,
+    `<p style="font-family:'Open Sans',sans-serif;font-size:16px;color:#747372;margin:0 0 20px;text-align:center">${escaparTexto(FIRMA)}${
+      noticia.publishedAt ? ` · ${escaparTexto(fechaLarga(noticia.publishedAt))}` : ""
+    }</p>`,
   ];
   if (noticia.imagen) {
     partes.push(
@@ -265,13 +304,13 @@ function cuerpo(noticia) {
   }
   if (noticia.resumen) {
     partes.push(
-      `<p style="font-family:Inter,sans-serif;font-size:16px;line-height:24px;color:rgba(0,0,0,.75);margin:15px 0">${escaparTexto(noticia.resumen)}</p>`,
+      `<p style="font-family:'Open Sans',sans-serif;font-size:18px;line-height:1.5;font-weight:700;color:#06080a;margin:25px 0 15px">${escaparTexto(noticia.resumen)}</p>`,
     );
   }
   partes.push(`<div class="cuerpo-articulo">${sanear(noticia.bodyHtml)}</div>`);
   if (noticia.categoria) {
     partes.push(
-      `<p style="font-family:Montserrat,sans-serif;font-size:14px;color:#450003;margin-top:30px">Etiquetas: ${escaparTexto(noticia.categoria)}</p>`,
+      `<p style="font-family:'Open Sans',sans-serif;font-size:14px;color:#747372;margin-top:30px">${escaparTexto(noticia.categoria)}</p>`,
     );
   }
   partes.push("</article>", "</div>");
