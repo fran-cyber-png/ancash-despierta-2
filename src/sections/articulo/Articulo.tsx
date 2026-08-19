@@ -1,96 +1,96 @@
 import { Link } from "react-router-dom";
-import { articulo, redesCompartir } from "./content";
-import { urlCanonica, type Noticia } from "../noticias";
+import { articulo } from "./content";
+import { BarraLateral } from "./BarraLateral";
+import { IconoCalendario, IconoFirma, IconoVolver } from "../../components/Iconos";
+import { fechaISO, fechaLarga, partirTitulo } from "../../utils/formato";
 import { sanear } from "../../utils/sanear";
+import { type Noticia } from "../noticias";
 
-export function Articulo({ noticia }: { noticia: Noticia }) {
-  const { compartir, etiquetas } = articulo;
-  const redes = redesCompartir(urlCanonica(noticia), noticia.titulo);
-  const categorias = noticia.categoria ? [noticia.categoria] : [];
+/**
+ * Página de nota, según el frame 2-1135 del Figma:
+ * panel gris con titular centrado + firma, portada que desborda ese panel, y
+ * abajo el cuerpo a dos columnas con la barra lateral.
+ */
+export function Articulo({ noticia, otras }: { noticia: Noticia; otras: Noticia[] }) {
+  const { fuerte, resto } = partirTitulo(noticia.titulo);
+  const fecha = fechaLarga(noticia.publishedAt);
 
   return (
-    <article className="w-full bg-paper px-[20px] pt-[50px] pb-[70px] desk:bg-white desk:px-0 desk:pt-[75px] desk:pb-[188px]">
-      <div className="mx-auto flex max-w-[390px] flex-col gap-[70px] desk:max-w-[780px]">
-        <div className="flex flex-col gap-[50px]">
-          <div className="flex flex-col gap-[15px]">
-            <Link
-              to="/"
-              className="inline-flex w-fit items-center gap-[10px] font-ui text-[32px] font-bold text-brand-red-dark"
-            >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 448 512"
-                className="h-[28px] w-[28px] shrink-0 fill-current"
-              >
-                <path d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z" />
-              </svg>
-              Inicio
-            </Link>
-            <h1 className="font-ui text-[40px] leading-[38px] font-bold uppercase text-black desk:font-display desk:text-[48px] desk:leading-[57.6px]">
-              {noticia.titulo}
-            </h1>
-            {noticia.imagen && (
-              <img
-                src={noticia.imagen}
-                alt={noticia.titulo}
-                className="aspect-[4/3] w-full object-cover"
-              />
+    <article className="w-full">
+      {/* Cabecera sobre el panel gris ------------------------------------ */}
+      <div className="w-full bg-panel">
+        <div className="mx-auto flex w-full max-w-[1600px] flex-col items-center px-[20px] pt-[36px] desk:px-[40px] desk:pt-[60px]">
+          <h1 className="text-center font-titulo text-[28px] leading-[1.2] font-normal text-tinta desk:max-w-[1180px] desk:text-[56px]">
+            {fuerte && <span className="font-bold">{fuerte}</span>}
+            {resto}
+          </h1>
+
+          <div className="mt-[18px] flex flex-wrap items-center justify-center gap-[14px] font-texto text-[14px] text-meta desk:mt-[28px] desk:gap-[24px] desk:text-[20px]">
+            <span className="flex items-center gap-[10px]">
+              <IconoFirma className="h-[20px] w-[20px] shrink-0 text-rojo" />
+              {articulo.firma}
+            </span>
+            {fecha && (
+              <>
+                <span className="h-[22px] w-px bg-azul" aria-hidden="true" />
+                <span className="flex items-center gap-[10px]">
+                  <IconoCalendario className="h-[20px] w-[20px] shrink-0 text-rojo" />
+                  <span>
+                    {articulo.lugar},{" "}
+                    <time dateTime={fechaISO(noticia.publishedAt)}>{fecha}</time>
+                  </span>
+                </span>
+              </>
             )}
           </div>
 
-          {/* El cuerpo llega como HTML del editor de Bravo (h2/h3/ul/ol/blockquote…).
-              La tipografía se define por etiqueta en `.cuerpo-articulo` (src/index.css):
-              el saneador descarta class/style, así que no se puede estilar con clases. */}
-          <div
-            className="cuerpo-articulo"
-            dangerouslySetInnerHTML={{ __html: sanear(noticia.bodyHtml) }}
-          />
+          {/* La portada asoma por debajo del panel, como en el Figma. */}
+          {noticia.imagen && (
+            <img
+              src={noticia.imagen}
+              alt={noticia.titulo}
+              className="mt-[24px] mb-[-24px] block h-[220px] w-full object-cover desk:mt-[38px] desk:mb-[-40px] desk:h-[545px] desk:w-[1376px] desk:max-w-full"
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Cuerpo + barra lateral ------------------------------------------ */}
+      <div className="mx-auto w-full max-w-[1600px] px-[20px] pt-[48px] pb-[56px] desk:px-[40px] desk:pt-[76px] desk:pb-[90px]">
+        <div className="flex items-center justify-between font-texto text-[14px] text-rojo desk:text-[15px]">
+          <nav className="flex items-center gap-[8px]">
+            {articulo.migas.map((miga) => (
+              <span key={miga.href} className="flex items-center gap-[8px]">
+                <Link to={miga.href}>{miga.texto}</Link>
+                <span aria-hidden="true">&gt;</span>
+              </span>
+            ))}
+          </nav>
+
+          <Link to="/" className="flex items-center gap-[8px]">
+            <IconoVolver className="h-[16px] w-[16px] shrink-0" />
+            {articulo.volver}
+          </Link>
         </div>
 
-        <div className="flex items-start justify-between desk:items-center">
-          <div className="flex w-[190px] flex-col gap-[10px] desk:w-auto desk:flex-row desk:items-center desk:gap-[15px]">
-            <p className="font-ui text-[16px] leading-[24px] font-bold whitespace-nowrap text-brand-ink desk:font-display desk:text-[18px] desk:leading-[27px]">
-              <span className="desk:hidden">{compartir.titulo}</span>
-              <span className="hidden desk:inline">{compartir.tituloDesk}</span>
-            </p>
-            <div className="flex items-center gap-[10px]">
-              {redes.map((red) => (
-                <a
-                  key={red.nombre}
-                  href={red.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Compartir en ${red.nombre}`}
-                  className={`flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full desk:h-[50px] desk:w-[50px] ${
-                    red.claro ? "bg-white" : "bg-brand-ink"
-                  }`}
-                >
-                  {/* Los SVG se exportan invertidos; el Figma los voltea en Y */}
-                  <img
-                    src={red.icono}
-                    alt=""
-                    className="h-[16px] w-[16px] -scale-y-100 desk:h-[18px] desk:w-[18px]"
-                  />
-                </a>
-              ))}
-            </div>
+        <div className="mt-[26px] flex flex-col gap-[40px] desk:mt-[38px] desk:flex-row desk:gap-[90px]">
+          <div className="min-w-0 flex-1">
+            {noticia.resumen && (
+              <p className="font-texto text-[17px] leading-[1.5] font-bold text-tinta desk:text-[20px]">
+                {noticia.resumen}
+              </p>
+            )}
+
+            {/* El cuerpo llega como HTML del editor de Bravo (h2/h3/ul/ol/blockquote…).
+                La tipografía se define por etiqueta en `.cuerpo-articulo` (src/index.css):
+                el saneador descarta class/style, así que no se puede estilar con clases. */}
+            <div
+              className="cuerpo-articulo mt-[20px]"
+              dangerouslySetInnerHTML={{ __html: sanear(noticia.bodyHtml) }}
+            />
           </div>
 
-          {categorias.length > 0 && (
-            <div className="flex flex-col gap-[10px] desk:flex-row desk:items-center desk:gap-[5px]">
-              <p className="font-ui text-[16px] leading-[24px] font-bold whitespace-nowrap text-brand-ink desk:font-display desk:text-[18px] desk:leading-[27px]">
-                {etiquetas.titulo}
-              </p>
-              {categorias.map((categoria) => (
-                <p
-                  key={categoria}
-                  className="font-ui text-[14px] leading-[21px] font-medium text-brand-ink desk:font-display desk:text-[16px] desk:leading-[24px] desk:text-black"
-                >
-                  {categoria}
-                </p>
-              ))}
-            </div>
-          )}
+          <BarraLateral actual={noticia} otras={otras} />
         </div>
       </div>
     </article>
